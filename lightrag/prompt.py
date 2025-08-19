@@ -1,6 +1,6 @@
 from __future__ import annotations
-from typing import Any
 
+from typing import Any
 
 PROMPTS: dict[str, Any] = {}
 
@@ -220,10 +220,8 @@ When handling relationships with timestamps:
 ---Response Rules---
 
 - Target format and length: {response_type}
-- Use markdown formatting with appropriate section headings
 - Please respond in the same language as the user's question.
-- Ensure the response maintains continuity with the conversation history.
-- List up to 5 most important reference sources at the end under "References" section. Clearly indicating whether each source is from Knowledge Graph (KG) or Document Chunks (DC), and include the file path if available, in the following format: [KG/DC] file_path
+- Focus only on answering the user’s query directly. Do not provide explanations or extra details beyond what is asked.
 - If you don't know the answer, just say so.
 - Do not make anything up. Do not include information not provided by the Knowledge Base.
 - Additional user prompt: {user_prompt}
@@ -306,13 +304,7 @@ You are a helpful assistant responding to user query about Document Chunks provi
 
 ---Goal---
 
-Generate a concise response based on Document Chunks and follow Response Rules, considering both the conversation history and the current query. Summarize all information in the provided Document Chunks, and incorporating general knowledge relevant to the Document Chunks. Do not include information not provided by Document Chunks.
-
-When handling content with timestamps:
-1. Each piece of content has a "created_at" timestamp indicating when we acquired this knowledge
-2. When encountering conflicting information, consider both the content and the timestamp
-3. Don't automatically prefer the most recent content - use judgment based on the context
-4. For time-specific queries, prioritize temporal information in the content before considering creation timestamps
+Generate a concise response based on Document Chunks and follow Response Rules. Summarize all information in the provided Document Chunks, and incorporating general knowledge relevant to the Document Chunks. Do not include information not provided by Document Chunks.
 
 ---Conversation History---
 {history}
@@ -323,10 +315,8 @@ When handling content with timestamps:
 ---Response Rules---
 
 - Target format and length: {response_type}
-- Use markdown formatting with appropriate section headings
 - Please respond in the same language as the user's question.
-- Ensure the response maintains continuity with the conversation history.
-- List up to 5 most important reference sources at the end under "References" section. Clearly indicating each source from Document Chunks(DC), and include the file path if available, in the following format: [DC] file_path
+- Focus only on answering the user’s query directly. Do not provide explanations or extra details beyond what is asked.
 - If you don't know the answer, just say so.
 - Do not include information not provided by the Document Chunks.
 - Addtional user prompt: {user_prompt}
