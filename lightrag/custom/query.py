@@ -1,15 +1,27 @@
 import asyncio
 
 import pandas as pd
-from loguru import logger
 
 from lightrag.base import QueryParam
 from lightrag.custom.data import qa_data
 from lightrag.custom.init_rag import initialize_rag
+from lightrag.utils import logger, setup_logger
+
+# Configure debug logging
+setup_logger("lightrag", level="DEBUG", enable_file_logging=True)
 
 
 async def query(rag, query: str, query_param: QueryParam):
+    logger.debug(f"Starting query: {query[:100]}...")
+    logger.debug(f"Query parameters: {query_param}")
+
     result = await rag.aquery(query, query_param)
+
+    logger.debug(
+        f"Query result: {result[:200]}..."
+        if len(result) > 200
+        else f"Query result: {result}"
+    )
     logger.info("Query completed!!")
     return result
 
@@ -37,7 +49,7 @@ async def main():
     rag = await initialize_rag()
     logger.info("RAG initialized with caching disabled!!")
     query_param = QueryParam(
-        mode="naive",
+        mode="local",
         only_need_context=False,
         only_need_prompt=False,
         response_type="Single Paragraph",
@@ -48,7 +60,9 @@ async def main():
         max_relation_tokens=10000,
         enable_rerank=False,
     )
-    await query_qa(rag, query_param)
+    example_query = "What is the document’s most recent update date and effective date?"
+    a = await query(rag, example_query, query_param)
+    print(a)
 
 
 if __name__ == "__main__":
